@@ -14,7 +14,7 @@ This library can works on Android and iOS.
   - [Why don't you use dart to do it](#why-dont-you-use-dart-to-do-it)
   - [Usage](#usage)
   - [About common params](#about-common-params)
-    - [minWidth and minHeight](#minwidth-and-minheight)
+    - [width and height](#width-and-height)
     - [rotate](#rotate)
     - [autoCorrectionAngle](#autocorrectionangle)
     - [quality](#quality)
@@ -69,8 +69,8 @@ There are several ways to use the library api.
   Future<Uint8List> testCompressFile(File file) async {
     var result = await FlutterImageCompress.compressWithFile(
       file.absolute.path,
-      minWidth: 2300,
-      minHeight: 1500,
+      width: 2300,
+      height: 1500,
       quality: 94,
       rotate: 90,
     );
@@ -97,8 +97,8 @@ There are several ways to use the library api.
   Future<Uint8List> testCompressAsset(String assetName) async {
     var list = await FlutterImageCompress.compressAssetImage(
       assetName,
-      minHeight: 1920,
-      minWidth: 1080,
+      height: 1920,
+      width: 1080,
       quality: 96,
       rotate: 180,
     );
@@ -110,8 +110,8 @@ There are several ways to use the library api.
   Future<Uint8List> testComporessList(Uint8List list) async {
     var result = await FlutterImageCompress.compressWithList(
       list,
-      minHeight: 1920,
-      minWidth: 1080,
+      height: 1920,
+      width: 1080,
       quality: 96,
       rotate: 135,
     );
@@ -123,11 +123,11 @@ There are several ways to use the library api.
 
 ## About common params
 
-### minWidth and minHeight
+### width and height
 
-`minWidth` and `minHeight` are constraints on image scaling.
+`width` and `height` are constraints on image scaling.
 
-For example, a 4000\*2000 image, `minWidth` set to 1920, `minHeight` set to 1080, the calculation is as follows:
+For example, a 4000\*2000 image, `width` set to 1920, `height` set to 1080, the calculation is as follows:
 
 ```dart
 // Using dart as an example, the actual implementation is Kotlin or OC.
@@ -137,8 +137,8 @@ void main() {
   var scale = calcScale(
     srcWidth: 4000,
     srcHeight: 2000,
-    minWidth: 1920,
-    minHeight: 1080,
+    width: 1920,
+    height: 1080,
   );
 
   print("scale = $scale"); // scale = 1.8518518518518519
@@ -148,11 +148,11 @@ void main() {
 double calcScale({
   double srcWidth,
   double srcHeight,
-  double minWidth,
-  double minHeight,
+  double width,
+  double height,
 }) {
-  var scaleW = srcWidth / minWidth;
-  var scaleH = srcHeight / minHeight;
+  var scaleW = srcWidth / width;
+  var scaleH = srcHeight / height;
 
   var scale = math.max(1.0, math.min(scaleW, scaleH));
 
@@ -161,7 +161,7 @@ double calcScale({
 
 ```
 
-If your image width is smaller than minWidth or height samller than minHeight, scale will be 1, that is, the size will not change.
+If your image width is smaller than width or height samller than height, scale will be 1, that is, the size will not change.
 
 ### rotate
 

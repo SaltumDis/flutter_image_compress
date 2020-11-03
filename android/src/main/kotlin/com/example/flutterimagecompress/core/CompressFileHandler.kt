@@ -17,8 +17,8 @@ class CompressFileHandler(private val call: MethodCall, result: MethodChannel.Re
     threadPool.execute {
       @Suppress("UNCHECKED_CAST") val args: List<Any> = call.arguments as List<Any>
       val filePath = args[0] as String
-      var minWidth = args[1] as Int
-      var minHeight = args[2] as Int
+      var width = args[1] as Int
+      var height = args[2] as Int
       val quality = args[3] as Int
       val rotate = args[4] as Int
       val autoCorrectionAngle = args[5] as Boolean
@@ -43,14 +43,14 @@ class CompressFileHandler(private val call: MethodCall, result: MethodChannel.Re
               }
 
       if (exifRotate == 270 || exifRotate == 90) {
-        val tmp = minWidth
-        minWidth = minHeight
-        minHeight = tmp
+        val tmp = width
+        width = height
+        height = tmp
       }
       val targetRotate = rotate + exifRotate
       val outputStream = ByteArrayOutputStream()
       try {
-        formatHandler.handleFile(context, filePath, outputStream, minWidth, minHeight, quality, targetRotate, keepExif, inSampleSize)
+        formatHandler.handleFile(context, filePath, outputStream, width, height, quality, targetRotate, keepExif, inSampleSize)
         reply(outputStream.toByteArray())
       } catch (e: Exception) {
         if (FlutterImageCompressPlugin.showLog) e.printStackTrace()
@@ -65,8 +65,8 @@ class CompressFileHandler(private val call: MethodCall, result: MethodChannel.Re
     threadPool.execute {
       @Suppress("UNCHECKED_CAST") val args: List<Any> = call.arguments as List<Any>
       val file = args[0] as String
-      var minWidth = args[1] as Int
-      var minHeight = args[2] as Int
+      var width = args[1] as Int
+      var height = args[2] as Int
       val quality = args[3] as Int
       val targetPath = args[4] as String
       val rotate = args[5] as Int
@@ -94,16 +94,16 @@ class CompressFileHandler(private val call: MethodCall, result: MethodChannel.Re
       }
 
       if (exifRotate == 270 || exifRotate == 90) {
-        val tmp = minWidth
-        minWidth = minHeight
-        minHeight = tmp
+        val tmp = width
+        width = height
+        height = tmp
       }
 
       val targetRotate = rotate + exifRotate
       var outputStream: OutputStream? = null
       try {
         outputStream = File(targetPath).outputStream()
-        formatHandler.handleFile(context, file, outputStream, minWidth, minHeight, quality, targetRotate, keepExif, inSampleSize)
+        formatHandler.handleFile(context, file, outputStream, width, height, quality, targetRotate, keepExif, inSampleSize)
         reply(targetPath)
       } catch (e: Exception) {
         if (FlutterImageCompressPlugin.showLog) e.printStackTrace()

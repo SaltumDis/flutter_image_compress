@@ -7,6 +7,6 @@
 
 @interface UIImage (scale)
 
-- (UIImage *)scaleWithMinWidth:(CGFloat)minWidth minHeight:(CGFloat)minHeight;
+- (UIImage *)scaleWithwidth:(CGFloat)width height:(CGFloat)height;
 - (UIImage *)rotate:(CGFloat) rotate;
 @end

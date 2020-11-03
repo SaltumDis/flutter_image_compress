@@ -67,15 +67,15 @@ func encode(targetType int32, img image.Image, quality int, writer io.Writer) er
 func listToList(arguments interface{}) (reply interface{}, err error) {
 	args := arguments.([]interface{})
 	img := args[0].([]uint8)
-	minWidth := args[1].(int32)
-	minHeight := args[2].(int32)
+	width := args[1].(int32)
+	height := args[2].(int32)
 	quality := int(args[3].(int32))
 	rotate := int(args[4].(int32))
 	targetType := args[6].(int32)
 
 	reader := bytes.NewReader(img)
 
-	scaled, err := ScaleImage(reader, minWidth, minHeight)
+	scaled, err := ScaleImage(reader, width, height)
 	if err != nil {
 		return
 	}
@@ -97,8 +97,8 @@ func listToList(arguments interface{}) (reply interface{}, err error) {
 func listToFile(arguments interface{}) (reply interface{}, err error) {
 	args := arguments.([]interface{})
 	srcPath := args[0].(string)
-	minWidth := args[1].(int32)
-	minHeight := args[2].(int32)
+	width := args[1].(int32)
+	height := args[2].(int32)
 	quality := int(args[3].(int32))
 	rotate := int(args[4].(int32))
 	targetType := args[6].(int32)
@@ -109,7 +109,7 @@ func listToFile(arguments interface{}) (reply interface{}, err error) {
 		return
 	}
 
-	scaled, err := ScaleImage(reader, minWidth, minHeight)
+	scaled, err := ScaleImage(reader, width, height)
 	if err != nil {
 		return
 	}
@@ -131,8 +131,8 @@ func listToFile(arguments interface{}) (reply interface{}, err error) {
 func fileToFile(arguments interface{}) (reply interface{}, err error) {
 	args := arguments.([]interface{})
 	srcPath := args[0].(string)
-	minWidth := args[1].(int32)
-	minHeight := args[2].(int32)
+	width := args[1].(int32)
+	height := args[2].(int32)
 	quality := int(args[3].(int32))
 	targetPath := args[4].(string)
 	rotate := int(args[5].(int32))
@@ -144,7 +144,7 @@ func fileToFile(arguments interface{}) (reply interface{}, err error) {
 		return
 	}
 
-	scaled, err := ScaleImage(reader, minWidth, minHeight)
+	scaled, err := ScaleImage(reader, width, height)
 	if err != nil {
 		return
 	}

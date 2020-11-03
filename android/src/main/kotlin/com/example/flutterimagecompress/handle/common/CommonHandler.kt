@@ -32,8 +32,8 @@ class CommonHandler(override val type: Int) : FormatHandler {
       }
     }
 
-  override fun handleByteArray(context: Context, byteArray: ByteArray, outputStream: OutputStream, minWidth: Int, minHeight: Int, quality: Int, rotate: Int, keepExif: Boolean, inSampleSize: Int) {
-    val result = compress(byteArray, minWidth, minHeight, quality, rotate, inSampleSize)
+  override fun handleByteArray(context: Context, byteArray: ByteArray, outputStream: OutputStream, width: Int, height: Int, quality: Int, rotate: Int, keepExif: Boolean, inSampleSize: Int) {
+    val result = compress(byteArray, width, height, quality, rotate, inSampleSize)
 
     if (keepExif && bitmapFormat == Bitmap.CompressFormat.JPEG) {
       val byteArrayOutputStream = ByteArrayOutputStream()
@@ -49,7 +49,7 @@ class CommonHandler(override val type: Int) : FormatHandler {
 
   }
 
-  private fun compress(arr: ByteArray, minWidth: Int, minHeight: Int, quality: Int, rotate: Int = 0, inSampleSize: Int): ByteArray {
+  private fun compress(arr: ByteArray, width: Int, height: Int, quality: Int, rotate: Int = 0, inSampleSize: Int): ByteArray {
     val options = BitmapFactory.Options()
     options.inJustDecodeBounds = false
     options.inPreferredConfig = Bitmap.Config.RGB_565
@@ -68,7 +68,7 @@ class CommonHandler(override val type: Int) : FormatHandler {
     log("src width = $w")
     log("src height = $h")
 
-    val scale = bitmap.calcScale(minWidth, minHeight)
+    val scale = bitmap.calcScale(width, height)
 
     log("scale = $scale")
 
@@ -78,7 +78,7 @@ class CommonHandler(override val type: Int) : FormatHandler {
     log("dst width = $destW")
     log("dst height = $destH")
 
-    Bitmap.createScaledBitmap(bitmap, destW.toInt(), destH.toInt(), true)
+    Bitmap.createScaledBitmap(bitmap, width, height, true)
             .rotate(rotate)
             .compress(bitmapFormat, quality, outputStream)
 
@@ -86,7 +86,7 @@ class CommonHandler(override val type: Int) : FormatHandler {
   }
 
 
-  override fun handleFile(context: Context, path: String, outputStream: OutputStream, minWidth: Int, minHeight: Int, quality: Int, rotate: Int, keepExif: Boolean, inSampleSize: Int) {
+  override fun handleFile(context: Context, path: String, outputStream: OutputStream, width: Int, height: Int, quality: Int, rotate: Int, keepExif: Boolean, inSampleSize: Int) {
     val options = BitmapFactory.Options()
     options.inJustDecodeBounds = false
     options.inPreferredConfig = Bitmap.Config.RGB_565
@@ -97,7 +97,7 @@ class CommonHandler(override val type: Int) : FormatHandler {
     }
     val bitmap = BitmapFactory.decodeFile(path, options)
 
-    val array = bitmap.compress(minWidth, minHeight, quality, rotate, type)
+    val array = bitmap.compress(width, height, quality, rotate, type)
 
     if (keepExif && bitmapFormat == Bitmap.CompressFormat.JPEG) {
       val byteArrayOutputStream = ByteArrayOutputStream()

@@ -22,8 +22,8 @@ flutter.AddPlugin(&flutter_image_compress.FlutterImageCompressPlugin{}),
 - [x] listToList
 - [x] listToFile
 
-- [x] minWidth
-- [x] minHeight
+- [x] width
+- [x] height
 - [x] rotate
 - [x] quality
 

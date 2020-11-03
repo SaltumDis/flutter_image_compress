@@ -11,23 +11,23 @@
 
 }
 
-+ (NSData *)compressWithData:(NSData *)data minWidth:(int)minWidth minHeight:(int)minHeight quality:(int)quality
++ (NSData *)compressWithData:(NSData *)data width:(int)width height:(int)height quality:(int)quality
                       rotate:(int)rotate format:(int)format {
     UIImage *img = [[UIImage alloc] initWithData:data];
-    return [CompressHandler compressWithUIImage:img minWidth:minWidth minHeight:minHeight quality:quality rotate:rotate format:format];
+    return [CompressHandler compressWithUIImage:img width:width height:height quality:quality rotate:rotate format:format];
 }
 
-+ (NSData *)compressWithUIImage:(UIImage *)image minWidth:(int)minWidth minHeight:(int)minHeight quality:(int)quality
++ (NSData *)compressWithUIImage:(UIImage *)image width:(int)width height:(int)height quality:(int)quality
                          rotate:(int)rotate format:(int)format {
     if([FlutterImageCompressPlugin showLog]){
         NSLog(@"width = %.0f",[image size].width);
         NSLog(@"height = %.0f",[image size].height);
-        NSLog(@"minWidth = %d",minWidth);
-        NSLog(@"minHeight = %d",minHeight);
+        NSLog(@"width = %d",width);
+        NSLog(@"height = %d",height);
         NSLog(@"format = %d", format);
     }
 
-    image = [image scaleWithMinWidth:minWidth minHeight:minHeight];
+    image = [image scaleWithwidth:width height:height];
     if(rotate % 360 != 0){
         image = [image rotate: rotate];
     }
@@ -37,9 +37,9 @@
 }
 
 
-+ (NSData *)compressDataWithUIImage:(UIImage *)image minWidth:(int)minWidth minHeight:(int)minHeight
++ (NSData *)compressDataWithUIImage:(UIImage *)image width:(int)width height:(int)height
                             quality:(int)quality rotate:(int)rotate format:(int)format {
-    image = [image scaleWithMinWidth:minWidth minHeight:minHeight];
+    image = [image scaleWithwidth:width height:height];
     if(rotate % 360 != 0){
         image = [image rotate: rotate];
     }

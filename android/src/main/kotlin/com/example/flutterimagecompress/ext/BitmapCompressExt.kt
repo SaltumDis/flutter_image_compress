@@ -8,20 +8,20 @@ import java.io.OutputStream
 import kotlin.math.max
 import kotlin.math.min
 
-fun Bitmap.compress(minWidth: Int, minHeight: Int, quality: Int, rotate: Int = 0, format: Int): ByteArray {
+fun Bitmap.compress(width: Int, height: Int, quality: Int, rotate: Int = 0, format: Int): ByteArray {
   val outputStream = ByteArrayOutputStream()
-  compress(minWidth, minHeight, quality, rotate, outputStream, format)
+  compress(width, height, quality, rotate, outputStream, format)
   return outputStream.toByteArray()
 }
 
-fun Bitmap.compress(minWidth: Int, minHeight: Int, quality: Int, rotate: Int = 0, outputStream: OutputStream, format: Int = 0) {
+fun Bitmap.compress(width: Int, height: Int, quality: Int, rotate: Int = 0, outputStream: OutputStream, format: Int = 0) {
   val w = this.width.toFloat()
   val h = this.height.toFloat()
   
   log("src width = $w")
   log("src height = $h")
   
-  val scale = calcScale(minWidth, minHeight)
+  val scale = calcScale(width, height)
   
   log("scale = $scale")
   
@@ -53,12 +53,12 @@ fun Bitmap.rotate(rotate: Int): Bitmap {
   }
 }
 
-fun Bitmap.calcScale(minWidth: Int, minHeight: Int): Float {
+fun Bitmap.calcScale(width: Int, height: Int): Float {
   val w = width.toFloat()
   val h = height.toFloat()
   
-  val scaleW = w / minWidth.toFloat()
-  val scaleH = h / minHeight.toFloat()
+  val scaleW = w / width.toFloat()
+  val scaleH = h / height.toFloat()
   
   log("width scale = $scaleW")
   log("height scale = $scaleH")

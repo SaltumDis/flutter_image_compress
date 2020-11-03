@@ -6,17 +6,17 @@
 #import "FlutterImageCompressPlugin.h"
 
 @implementation UIImage (scale)
--(UIImage *)scaleWithMinWidth: (CGFloat)minWidth minHeight:(CGFloat)minHeight {
+-(UIImage *)scaleWithwidth: (CGFloat)width height:(CGFloat)height {
     float actualHeight = self.size.height;
     float actualWidth = self.size.width;
     float imgRatio = actualWidth/actualHeight;
-    float maxRatio = minWidth/minHeight;
+    float maxRatio = width/height;
     float scaleRatio = 1;
     
     if(imgRatio < maxRatio) {
-        scaleRatio = minWidth / actualWidth;
+        scaleRatio = width / actualWidth;
     } else {
-        scaleRatio = minHeight / actualHeight;
+        scaleRatio = height / actualHeight;
     }
     scaleRatio = fminf(1, scaleRatio);
 

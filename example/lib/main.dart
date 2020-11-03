@@ -40,8 +40,7 @@ class _MyAppState extends State<MyApp> {
     final beforeCompress = data.lengthInBytes;
     print("beforeCompress = $beforeCompress");
 
-    final result =
-        await FlutterImageCompress.compressWithList(data.buffer.asUint8List());
+    final result = await FlutterImageCompress.compressWithList(data.buffer.asUint8List());
 
     print("after = ${result?.length ?? 0}");
   }
@@ -190,8 +189,8 @@ class _MyAppState extends State<MyApp> {
     print("testCompressFile");
     final result = await FlutterImageCompress.compressWithFile(
       file.absolute.path,
-      minWidth: 2300,
-      minHeight: 1500,
+      width: 2300,
+      height: 1500,
       quality: 94,
       rotate: 180,
     );
@@ -206,8 +205,8 @@ class _MyAppState extends State<MyApp> {
       file.absolute.path,
       targetPath,
       quality: 90,
-      minWidth: 1024,
-      minHeight: 1024,
+      width: 1024,
+      height: 1024,
       rotate: 90,
     );
 
@@ -221,8 +220,8 @@ class _MyAppState extends State<MyApp> {
     print("testCompressAsset");
     final list = await FlutterImageCompress.compressAssetImage(
       assetName,
-      minHeight: 1920,
-      minWidth: 1080,
+      height: 1920,
+      width: 1080,
       quality: 96,
       rotate: 135,
     );
@@ -244,8 +243,8 @@ class _MyAppState extends State<MyApp> {
   Future<Uint8List> testComporessList(Uint8List list) async {
     final result = await FlutterImageCompress.compressWithList(
       list,
-      minHeight: 1080,
-      minWidth: 1080,
+      height: 1080,
+      width: 1080,
       quality: 96,
       rotate: 270,
       format: CompressFormat.webp,
@@ -263,7 +262,7 @@ class _MyAppState extends State<MyApp> {
   void _compressAssetAndAutoRotate() async {
     final result = await FlutterImageCompress.compressAssetImage(
       R.IMG_AUTO_ANGLE_JPG,
-      minWidth: 1000,
+      width: 1000,
       quality: 95,
       // autoCorrectionAngle: false,
     );
@@ -275,8 +274,8 @@ class _MyAppState extends State<MyApp> {
   void _compressPngImage() async {
     final result = await FlutterImageCompress.compressAssetImage(
       R.IMG_HEADER_PNG,
-      minWidth: 300,
-      minHeight: 500,
+      width: 300,
+      height: 500,
     );
 
     final u8list = Uint8List.fromList(result);
@@ -285,12 +284,11 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _compressTransPNG() async {
-    final bytes =
-        await getAssetImageUint8List(R.IMG_TRANSPARENT_BACKGROUND_PNG);
+    final bytes = await getAssetImageUint8List(R.IMG_TRANSPARENT_BACKGROUND_PNG);
     final result = await FlutterImageCompress.compressWithList(
       bytes,
-      minHeight: 100,
-      minWidth: 100,
+      height: 100,
+      width: 100,
       format: CompressFormat.png,
     );
 
@@ -307,8 +305,8 @@ class _MyAppState extends State<MyApp> {
   void _compressImageAndKeepExif() async {
     final result = await FlutterImageCompress.compressAssetImage(
       R.IMG_AUTO_ANGLE_JPG,
-      minWidth: 500,
-      minHeight: 600,
+      width: 500,
+      height: 600,
       // autoCorrectionAngle: false,
       keepExif: true,
     );
@@ -338,8 +336,7 @@ class _MyAppState extends State<MyApp> {
     print("Compress heic success.");
     logger.logTime();
     print("src, path = $srcPath length = ${File(srcPath).lengthSync()}");
-    print(
-        "Compress heic result path: ${result.absolute.path}, size: ${result.lengthSync()}");
+    print("Compress heic result path: ${result.absolute.path}, size: ${result.lengthSync()}");
   }
 
   void _compressAndroidWebpExample() async {
@@ -349,22 +346,20 @@ class _MyAppState extends State<MyApp> {
     print("start compress webp");
     final quality = 90;
     final tmpDir = (await getTemporaryDirectory()).path;
-    final target =
-        "$tmpDir/${DateTime.now().millisecondsSinceEpoch}-$quality.webp";
+    final target = "$tmpDir/${DateTime.now().millisecondsSinceEpoch}-$quality.webp";
     final srcPath = await getExampleFilePath();
     final result = await FlutterImageCompress.compressAndGetFile(
       srcPath,
       target,
       format: CompressFormat.webp,
-      minHeight: 800,
-      minWidth: 800,
+      height: 800,
+      width: 800,
       quality: quality,
     );
     print("Compress webp success.");
     logger.logTime();
     print("src, path = $srcPath length = ${File(srcPath).lengthSync()}");
-    print(
-        "Compress webp result path: ${result.absolute.path}, size: ${result.lengthSync()}");
+    print("Compress webp result path: ${result.absolute.path}, size: ${result.lengthSync()}");
 
     provider = FileImage(result);
     setState(() {});
@@ -379,11 +374,11 @@ Future<Uint8List> getAssetImageUint8List(String key) async {
 double calcScale({
   double srcWidth,
   double srcHeight,
-  double minWidth,
-  double minHeight,
+  double width,
+  double height,
 }) {
-  final scaleW = srcWidth / minWidth;
-  final scaleH = srcHeight / minHeight;
+  final scaleW = srcWidth / width;
+  final scaleH = srcHeight / height;
 
   final scale = math.max(1.0, math.min(scaleW, scaleH));
 

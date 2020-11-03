@@ -20,24 +20,24 @@ func RotateImage(img image.Image, degree int) image.Image {
 }
 
 // Scale image
-func ScaleImage(reader io.Reader, minWidth, minHeight int32) (img image.Image, err error) {
+func ScaleImage(reader io.Reader, width, height int32) (img image.Image, err error) {
 	img, _, err = image.Decode(reader)
 	if err != nil {
 		return
 	}
 
-	w, h := calcTargetSize(img, minHeight, minHeight)
+	w, h := calcTargetSize(img, height, height)
 
 	img = resize.Resize(w, h, img, resize.Lanczos3)
 	return
 }
 
-func calcTargetSize(img image.Image, minWidth, minHeight int32) (uint, uint) {
+func calcTargetSize(img image.Image, width, height int32) (uint, uint) {
 	srcW := float32(img.Bounds().Size().X)
 	srcH := float32(img.Bounds().Size().Y)
 
-	scaleW := srcW / float32(minWidth)
-	scaleH := srcH / float32(minHeight)
+	scaleW := srcW / float32(width)
+	scaleH := srcH / float32(height)
 
 	scale := scaleW
 	if scaleH < scaleW {

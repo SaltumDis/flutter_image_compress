@@ -15,8 +15,8 @@
 
     NSArray *args = call.arguments;
     NSString *path = args[0];
-    int minWidth = [args[1] intValue];
-    int minHeight = [args[2] intValue];
+    int width = [args[1] intValue];
+    int height = [args[2] intValue];
     int quality = [args[3] intValue];
     int rotate = [args[4] intValue];
 
@@ -43,7 +43,7 @@
     }
 
 
-    NSData *data = [CompressHandler compressWithUIImage:img minWidth:minWidth minHeight:minHeight quality:quality rotate:rotate format:formatType];
+    NSData *data = [CompressHandler compressWithUIImage:img width:width height:height quality:quality rotate:rotate format:formatType];
 
     if (keepExif) {
         SYMetadata *metadata = [SYMetadata metadataWithFileURL:[NSURL fileURLWithPath:path]];
@@ -57,8 +57,8 @@
 - (void)handleCompressFileToFile:(FlutterMethodCall *)call result:(FlutterResult)result {
     NSArray *args = call.arguments;
     NSString *path = args[0];
-    int minWidth = [args[1] intValue];
-    int minHeight = [args[2] intValue];
+    int width = [args[1] intValue];
+    int height = [args[2] intValue];
     int quality = [args[3] intValue];
     NSString *targetPath = args[4];
     int rotate = [args[5] intValue];
@@ -85,7 +85,7 @@
         img = [UIImage imageWithData:nsdata];
     }
     
-    NSData *data = [CompressHandler compressDataWithUIImage:img minWidth:minWidth minHeight:minHeight quality:quality rotate:rotate format:formatType];
+    NSData *data = [CompressHandler compressDataWithUIImage:img width:width height:height quality:quality rotate:rotate format:formatType];
 
     if (keepExif) {
         SYMetadata *metadata = [SYMetadata metadataWithFileURL:[NSURL fileURLWithPath:path]];

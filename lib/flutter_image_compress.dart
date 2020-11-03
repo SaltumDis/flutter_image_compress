@@ -37,8 +37,7 @@ export 'src/compress_format.dart';
 /// support rotate
 ///
 class FlutterImageCompress {
-  static const MethodChannel _channel =
-      const MethodChannel('flutter_image_compress');
+  static const MethodChannel _channel = const MethodChannel('flutter_image_compress');
 
   static Validator _validator = Validator(_channel);
 
@@ -51,8 +50,8 @@ class FlutterImageCompress {
   /// Compress image from [Uint8List] to [Uint8List].
   static Future<Uint8List> compressWithList(
     Uint8List image, {
-    int minWidth = 1920,
-    int minHeight = 1080,
+    int width = 1920,
+    int height = 1080,
     int quality = 95,
     int rotate = 0,
     int inSampleSize = 1,
@@ -78,8 +77,8 @@ class FlutterImageCompress {
 
     final result = await _channel.invokeMethod("compressWithList", [
       image,
-      minWidth,
-      minHeight,
+      width,
+      height,
       quality,
       rotate,
       autoCorrectionAngle,
@@ -94,8 +93,8 @@ class FlutterImageCompress {
   /// Compress file of [path] to [Uint8List].
   static Future<Uint8List> compressWithFile(
     String path, {
-    int minWidth = 1920,
-    int minHeight = 1080,
+    int width = 1920,
+    int height = 1080,
     int inSampleSize = 1,
     int quality = 95,
     int rotate = 0,
@@ -118,8 +117,8 @@ class FlutterImageCompress {
 
     final result = await _channel.invokeMethod("compressWithFile", [
       path,
-      minWidth,
-      minHeight,
+      width,
+      height,
       quality,
       rotate,
       autoCorrectionAngle,
@@ -134,8 +133,8 @@ class FlutterImageCompress {
   static Future<File> compressAndGetFile(
     String path,
     String targetPath, {
-    int minWidth = 1920,
-    int minHeight = 1080,
+    int width = 1920,
+    int height = 1080,
     int inSampleSize = 1,
     int quality = 95,
     int rotate = 0,
@@ -151,8 +150,7 @@ class FlutterImageCompress {
       throw "Image file does not exist";
     }
     assert(targetPath != null, "The target path must be null.");
-    assert(
-        targetPath != path, "Target path and source path cannot be the same.");
+    assert(targetPath != path, "Target path and source path cannot be the same.");
 
     _validator.checkFileNameAndFormat(targetPath, format);
 
@@ -161,11 +159,10 @@ class FlutterImageCompress {
       return null;
     }
 
-    final String result =
-        await _channel.invokeMethod("compressWithFileAndGetFile", [
+    final String result = await _channel.invokeMethod("compressWithFileAndGetFile", [
       path,
-      minWidth,
-      minHeight,
+      width,
+      height,
       quality,
       targetPath,
       rotate,
@@ -185,8 +182,8 @@ class FlutterImageCompress {
   /// From [asset] to [Uint8List]
   static Future<Uint8List> compressAssetImage(
     String assetName, {
-    int minWidth = 1920,
-    int minHeight = 1080,
+    int width = 1920,
+    int height = 1080,
     int quality = 95,
     int rotate = 0,
     bool autoCorrectionAngle = true,
@@ -220,8 +217,8 @@ class FlutterImageCompress {
 
     return compressWithList(
       uint8List,
-      minHeight: minHeight,
-      minWidth: minWidth,
+      height: height,
+      width: width,
       quality: quality,
       rotate: rotate,
       autoCorrectionAngle: autoCorrectionAngle,

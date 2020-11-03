@@ -20,22 +20,22 @@ class HeifHandler : FormatHandler {
   override val typeName: String
     get() = "heif"
 
-  override fun handleByteArray(context: Context, byteArray: ByteArray, outputStream: OutputStream, minWidth: Int, minHeight: Int, quality: Int, rotate: Int, keepExif: Boolean, inSampleSize: Int) {
+  override fun handleByteArray(context: Context, byteArray: ByteArray, outputStream: OutputStream, width: Int, height: Int, quality: Int, rotate: Int, keepExif: Boolean, inSampleSize: Int) {
     val tmpFile = TmpFileUtil.createTmpFile(context)
-    compress(byteArray, minWidth, minHeight, quality, rotate, inSampleSize, tmpFile.absolutePath)
+    compress(byteArray, width, height, quality, rotate, inSampleSize, tmpFile.absolutePath)
     outputStream.write(tmpFile.readBytes())
   }
 
-  private fun compress(arr: ByteArray, minWidth: Int, minHeight: Int, quality: Int, rotate: Int = 0, inSampleSize: Int, targetPath: String) {
+  private fun compress(arr: ByteArray, width: Int, height: Int, quality: Int, rotate: Int = 0, inSampleSize: Int, targetPath: String) {
     val options = makeOption(inSampleSize)
     val bitmap = BitmapFactory.decodeByteArray(arr, 0, arr.count(), options)
-    convertToHeif(bitmap, minWidth, minHeight, rotate, targetPath, quality)
+    convertToHeif(bitmap, width, height, rotate, targetPath, quality)
   }
 
-  private fun compress(path: String, minWidth: Int, minHeight: Int, quality: Int, rotate: Int = 0, inSampleSize: Int, targetPath: String) {
+  private fun compress(path: String, width: Int, height: Int, quality: Int, rotate: Int = 0, inSampleSize: Int, targetPath: String) {
     val options = makeOption(inSampleSize)
     val bitmap = BitmapFactory.decodeFile(path, options)
-    convertToHeif(bitmap, minWidth, minHeight, rotate, targetPath, quality)
+    convertToHeif(bitmap, width, height, rotate, targetPath, quality)
   }
 
   private fun makeOption(inSampleSize: Int): BitmapFactory.Options {
@@ -50,14 +50,14 @@ class HeifHandler : FormatHandler {
     return options
   }
 
-  private fun convertToHeif(bitmap: Bitmap, minWidth: Int, minHeight: Int, rotate: Int, targetPath: String, quality: Int) {
+  private fun convertToHeif(bitmap: Bitmap, width: Int, height: Int, rotate: Int, targetPath: String, quality: Int) {
     val w = bitmap.width.toFloat()
     val h = bitmap.height.toFloat()
 
     log("src width = $w")
     log("src height = $h")
 
-    val scale = bitmap.calcScale(minWidth, minHeight)
+    val scale = bitmap.calcScale(width, height)
 
     log("scale = $scale")
 
@@ -82,9 +82,9 @@ class HeifHandler : FormatHandler {
     heifWriter.close()
   }
 
-  override fun handleFile(context: Context, path: String, outputStream: OutputStream, minWidth: Int, minHeight: Int, quality: Int, rotate: Int, keepExif: Boolean, inSampleSize: Int) {
+  override fun handleFile(context: Context, path: String, outputStream: OutputStream, width: Int, height: Int, quality: Int, rotate: Int, keepExif: Boolean, inSampleSize: Int) {
     val tmpFile = TmpFileUtil.createTmpFile(context)
-    compress(path, minWidth, minHeight, quality, rotate, inSampleSize, tmpFile.absolutePath)
+    compress(path, width, height, quality, rotate, inSampleSize, tmpFile.absolutePath)
     outputStream.write(tmpFile.readBytes())
   }
 }
