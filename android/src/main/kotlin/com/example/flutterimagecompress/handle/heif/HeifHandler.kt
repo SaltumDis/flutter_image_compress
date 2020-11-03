@@ -67,7 +67,7 @@ class HeifHandler : FormatHandler {
     log("dst width = $destW")
     log("dst height = $destH")
 
-    val result = Bitmap.createScaledBitmap(bitmap, destW.toInt(), destH.toInt(), true)
+    val result = Bitmap.createScaledBitmap(bitmap, width,height, true)
             .rotate(rotate)
 
     val heifWriter = HeifWriter.Builder(targetPath, result.width, result.height, HeifWriter.INPUT_MODE_BITMAP)
