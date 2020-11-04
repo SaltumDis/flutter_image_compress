@@ -2,6 +2,7 @@ package com.example.flutterimagecompress.ext
 
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.media.ThumbnailUtils
 import com.example.flutterimagecompress.FlutterImageCompressPlugin
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
@@ -17,23 +18,19 @@ fun Bitmap.compress(width: Int, height: Int, quality: Int, rotate: Int = 0, form
 fun Bitmap.compress(width: Int, height: Int, quality: Int, rotate: Int = 0, outputStream: OutputStream, format: Int = 0) {
   val w = this.width.toFloat()
   val h = this.height.toFloat()
-  
-  log("src width = $w")
-  log("src height = $h")
-  
-  val scale = calcScale(width, height)
-  
-  log("scale = $scale")
-  
-  val destW = w / scale
-  val destH = h / scale
-  
-  log("dst width = $destW")
-  log("dst height = $destH")
-  
-  Bitmap.createScaledBitmap(this, width, height, true)
-    .rotate(rotate)
-    .compress(convertFormatIndexToFormat(format), quality, outputStream)
+
+  if(width < w &&  height < h){
+
+    ThumbnailUtils.extractThumbnail(this, width, height)
+            .rotate(rotate)
+            .compress(convertFormatIndexToFormat(format), quality, outputStream)
+  } else {
+
+    this
+            .rotate(rotate)
+            .compress(convertFormatIndexToFormat(format), quality, outputStream)
+  }
+
 }
 
 private fun log(any: Any?) {

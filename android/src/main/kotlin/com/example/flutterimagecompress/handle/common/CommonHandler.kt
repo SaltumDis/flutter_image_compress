@@ -3,6 +3,8 @@ package com.example.flutterimagecompress.handle.common
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.media.ThumbnailUtils
 import com.example.flutterimagecompress.exif.ExifKeeper
 import com.example.flutterimagecompress.ext.calcScale
 import com.example.flutterimagecompress.ext.compress
@@ -65,22 +67,16 @@ class CommonHandler(override val type: Int) : FormatHandler {
     val w = bitmap.width.toFloat()
     val h = bitmap.height.toFloat()
 
-    log("src width = $w")
-    log("src height = $h")
+    if(width < w &&  height < h){
+      ThumbnailUtils.extractThumbnail(bitmap, width, height)
+              .rotate(rotate)
+              .compress(bitmapFormat, quality, outputStream)
+    }
+    else {
+      bitmap.rotate(rotate)
+              .compress(bitmapFormat, quality, outputStream)
+    }
 
-    val scale = bitmap.calcScale(width, height)
-
-    log("scale = $scale")
-
-    val destW = w / scale
-    val destH = h / scale
-
-    log("dst width = $destW")
-    log("dst height = $destH")
-
-    Bitmap.createScaledBitmap(bitmap, width, height, true)
-            .rotate(rotate)
-            .compress(bitmapFormat, quality, outputStream)
 
     return outputStream.toByteArray()
   }

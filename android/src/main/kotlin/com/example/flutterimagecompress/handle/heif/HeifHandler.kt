@@ -3,6 +3,7 @@ package com.example.flutterimagecompress.handle.heif
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.ThumbnailUtils
 import android.os.Build
 import androidx.heifwriter.HeifWriter
 import com.example.flutterimagecompress.ext.calcScale
@@ -54,21 +55,14 @@ class HeifHandler : FormatHandler {
     val w = bitmap.width.toFloat()
     val h = bitmap.height.toFloat()
 
-    log("src width = $w")
-    log("src height = $h")
+    val result = if(width < w &&  height < h){
+      ThumbnailUtils.extractThumbnail(bitmap, width, height)
+              .rotate(rotate)
+    } else {
+      bitmap.rotate(rotate)
 
-    val scale = bitmap.calcScale(width, height)
+    }
 
-    log("scale = $scale")
-
-    val destW = w / scale
-    val destH = h / scale
-
-    log("dst width = $destW")
-    log("dst height = $destH")
-
-    val result = Bitmap.createScaledBitmap(bitmap, width,height, true)
-            .rotate(rotate)
 
     val heifWriter = HeifWriter.Builder(targetPath, result.width, result.height, HeifWriter.INPUT_MODE_BITMAP)
             .setQuality(quality)

@@ -22,7 +22,8 @@
 
     actualWidth = floor(scaleRatio * actualWidth);
     actualHeight = floor(scaleRatio * actualHeight);
-    
+
+    UIGraphicsBeginImageContext(CGRectMake(0.0, 0.0, width, height).size); // this will crop
     CGRect rect = CGRectMake(0.0, 0.0, actualWidth, actualHeight);
     UIGraphicsBeginImageContext(rect.size);
     [self drawInRect:rect];
@@ -30,7 +31,6 @@
     UIGraphicsEndImageContext();
     
     if([FlutterImageCompressPlugin showLog]){
-        NSLog(@"scale = %.2f", scaleRatio);
         NSLog(@"dst width = %.2f", rect.size.width);
         NSLog(@"dst height = %.2f", rect.size.height);
     }
